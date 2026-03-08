@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClinAlert System | Intelligent Clinical Support</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Elegant & Cute Font Combination -->
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;400;500;600&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables & Theme */
+        :root {
+            /* Elegant, soft color palette */
+            --bg-base: #FCFAF8; /* Warm alabaster */
+            --primary: #8CA6DB; /* Serene soft blue */
+            --secondary: #E2B4BD; /* Cute pastel blush */
+            --accent: #B9935A; /* Elegant muted gold/sand */
+            
+            --text-dark: #2D3142; /* Soft navy/slate for readability */
+            --text-muted: #6B708D;
+            --white: #ffffff;
+            
+            /* Glassmorphism variables */
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 15px 35px rgba(140, 166, 219, 0.15);
+            
+            --radius-lg: 32px;
+            --radius-md: 20px;
+            --radius-sm: 12px;
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            
+            /* Fonts */
+            --font-heading: 'Fraunces', serif;
+            --font-body: 'Quicksand', sans-serif;
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-dark);
+            background-color: var(--bg-base);
+            /* Elegant, fixed soft mesh gradient background */
+            background-image: 
+                radial-gradient(circle at 15% 10%, rgba(226, 180, 189, 0.3) 0%, transparent 40%),
+                radial-gradient(circle at 85% 20%, rgba(140, 166, 219, 0.25) 0%, transparent 45%),
+                radial-gradient(circle at 50% 80%, rgba(185, 147, 90, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 10% 90%, rgba(140, 166, 219, 0.2) 0%, transparent 40%);
+            background-attachment: fixed;
+            line-height: 1.7;
+            overflow-x: hidden;
+            font-size: 1.05rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, .logo {
+            font-family: var(--font-heading);
+            color: var(--text-dark);
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary), #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto 4rem;
+            font-size: 1.2rem;
+            font-weight: 400;
+        }
+
+        /* Reusable Glass Card */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--glass-shadow);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 4px 10px rgba(226, 180, 189, 0.4);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-muted);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--primary);
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-dark);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #a78bfa);
+            color: var(--white);
+            box-shadow: 0 8px 20px rgba(140, 166, 219, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(140, 166, 219, 0.5);
+            background: linear-gradient(135deg, #a78bfa, var(--primary));
+        }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--text-dark);
+            border: 2px solid var(--primary);
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: 0 8px 20px rgba(140, 166, 219, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            padding: 160px 5% 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            max-width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 500;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1.2rem;
+            justify-content: center;
+        }
+
+        /* Layout & Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 5%;
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        /* About Section */
+        .about-card {
+            padding: 4rem 3rem;
+        }
+
+        .about-content h4 {
+            color: var(--secondary);
+            font-family: var(--font-body);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .about-content h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .challenge-list {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .challenge-list li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            background: rgba(255, 255, 255, 0.4);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .challenge-list li svg {
+            color: var(--secondary);
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .feature-card {
+            padding: 3.5rem 2.5rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 20px 40px rgba(140, 166, 219, 0.2);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(226, 180, 189, 0.2), rgba(140, 166, 219, 0.2));
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: var(--primary);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transform: rotate(-5deg);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: rotate(0deg) scale(1.1);
+            color: var(--secondary);
+        }
+
+        .feature-icon svg {
+            width: 36px;
+            height: 36px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .feature-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Workflow Section */
+        .workflow-steps {
+            max-width: 850px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-number {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--white), var(--bg-base));
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            flex-shrink: 0;
+            box-shadow: 0 10px 20px rgba(140, 166, 219, 0.15);
+            z-index: 2;
+            position: relative;
+        }
+
+        .step-content {
+            margin-left: 2.5rem;
+            padding: 2.5rem;
+            width: 100%;
+            transition: var(--transition);
+        }
+
+        .step-content:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .step-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-dark);
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        /* Connector Line */
+        .workflow-steps::after {
+            content: '';
+            position: absolute;
+            top: 35px;
+            left: 35px;
+            width: 2px;
+            height: calc(100% - 70px);
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 8rem 5%;
+            position: relative;
+            text-align: center;
+        }
+
+        .contact-card {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 5rem 3rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
+        }
+
+        .contact-card h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-card p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1.2rem 1.8rem;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--text-dark);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 500;
+            outline: none;
+            transition: var(--transition);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .form-control::placeholder {
+            color: #9CA3AF;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 0 4px rgba(140, 166, 219, 0.15);
+        }
+
+        textarea.form-control {
+            border-radius: var(--radius-md);
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 5%;
+            text-align: center;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            color: var(--text-dark);
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .two-column {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+                width: 95%;
+            }
+            .nav-links {
+                display: none; 
+            }
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            .form-group {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .step {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .workflow-steps::after {
+                display: none;
+            }
+            .step-content {
+                margin-left: 0;
+                margin-top: -20px;
+                padding-top: 3rem;
+            }
+            .step-number {
+                margin: 0 auto;
+            }
+            .about-card, .contact-card {
+                padding: 2.5rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <div class="logo-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+            </div>
+            ClinAlert
+        </div>
+        <ul class="nav-links">
+            <li><a href="#about">The Challenge</a></li>
+            <li><a href="#features">Solutions</a></li>
+            <li><a href="#workflow">How It Works</a></li>
+        </ul>
+        <a href="#contact" class="btn btn-primary" style="padding: 0.6rem 1.4rem; font-size: 0.95rem;">Get in Touch</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content reveal">
+            <h1>Bridging the Gap in <br><span class="text-gradient">Healthcare Delivery</span></h1>
+            <p>ClinAlert is an intelligent clinical support and notification system designed to bridge critical knowledge gaps among healthcare workers while ensuring timely, life-saving clinical actions.</p>
+            <div class="hero-btns">
+                <a href="#about" class="btn btn-primary">Discover ClinAlert</a>
+                <a href="#features" class="btn btn-outline">View Features</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- About / Problem Section -->
+    <section id="about" class="container reveal">
+        <div class="two-column">
+            <div class="about-content">
+                <h4>The Challenge</h4>
+                <h2>Navigating Healthcare Delivery Complexities</h2>
+                <p>Healthcare providers frequently require quick guidance on standard practices outlined in national treatment guidelines. However, accessing these guidelines in real time is challenging due to the immense volume of documentation, strict time constraints, and the lack of accessible reference tools.</p>
+                <p>This challenge leads to inconsistencies in service delivery and uncertainty among frontline health workers. Furthermore, patients qualifying for regimen adjustments (like ARV) are often missed due to delayed communication between teams.</p>
+                
+                <ul class="challenge-list">
+                    <li>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        Fragmented Clinical Processes
+                    </li>
+                    <li>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        Inaccessible Documentation
+                    </li>
+                    <li>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        Delayed Patient Interventions
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="glass-card about-card text-center" style="display: flex; flex-direction: column; justify-content: center; text-align: center;">
+                <div class="logo-icon" style="width: 60px; height: 60px; margin: 0 auto 1.5rem; border-radius: 20px;">
+                    <svg width="30" height="30" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+                <h3 style="font-size: 2.2rem; margin-bottom: 1rem; color: var(--text-dark);">ClinAlert solves this.</h3>
+                <p style="font-size: 1.15rem; color: var(--text-muted); font-weight: 500;">By transforming fragmented workflows into a proactive, beautifully integrated system of care.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" style="padding: 4rem 0;">
+        <div class="container reveal">
+            <h2 class="section-title">An Integrated System of Care</h2>
+            <p class="section-subtitle">Combining a guideline-based knowledge tool with an automated clinical alert system to strengthen frontline healthcare delivery.</p>
+            
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="glass-card feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                    </div>
+                    <h3>Knowledge Base</h3>
+                    <p>Query the system to receive clear, instant, guideline-based responses derived from national treatment protocols, enabling informed decision-making.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-card feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                    </div>
+                    <h3>Real-Time Alerts</h3>
+                    <p>Automated instant alerts sent to relevant stakeholders—clinicians, pharmacists, and monitoring teams—ensuring interventions are never missed.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-card feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Incident Reports</h3>
+                    <p>Easily submit reports for patients eligible for regimen adjustments, seamlessly capturing next appointment dates and critical clinical data.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow / Use Case Section -->
+    <section id="workflow" class="container reveal">
+        <h2 class="section-title">How ClinAlert Works</h2>
+        <p class="section-subtitle">A streamlined workflow designed specifically for managing patients eligible for regimen switches, enhancing cross-team coordination.</p>
+        
+        <div class="workflow-steps">
+            <div class="step reveal">
+                <div class="step-number">1</div>
+                <div class="glass-card step-content">
+                    <h3>Identify & Report</h3>
+                    <p>A healthcare worker identifies a patient eligible for a regimen switch. They use ClinAlert to instantly submit a structured incident report, capturing vital clinical details and the date of the next facility visit.</p>
+                </div>
+            </div>
+            <div class="step reveal">
+                <div class="step-number">2</div>
+                <div class="glass-card step-content">
+                    <h3>Automated Routing</h3>
+                    <p>Once submitted, the system automatically processes the data and distributes instant, targeted notifications to the required stakeholders, including program managers and pharmacists.</p>
+                </div>
+            </div>
+            <div class="step reveal">
+                <div class="step-number">3</div>
+                <div class="glass-card step-content">
+                    <h3>Prepare & Act</h3>
+                    <p>The clinical team receives the alert ahead of time. They prepare the necessary protocols and medications, ensuring a smooth, standard-compliant regimen switch during the patient's next visit.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact / CTA Section -->
+    <section id="contact" class="contact-section reveal">
+        <div class="glass-card contact-card">
+            <h2>Ready to Transform Your Clinic?</h2>
+            <p>Promote standardized service delivery, enhance team coordination, and improve patient outcomes with ClinAlert.</p>
+            
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for your interest! A representative will reach out soon.');">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Your Name" required>
+                    <input type="text" class="form-control" placeholder="Facility / Organization" required>
+                </div>
+                <textarea class="form-control" placeholder="How can ClinAlert help your team?" required></textarea>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 1.2rem; font-size: 1.1rem;">
+                    Request a Demonstration
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 5px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">
+            <div class="logo-icon" style="width: 24px; height: 24px; border-radius: 6px;">
+                <svg viewBox="0 0 24 24" style="width: 14px; height: 14px;">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+            </div>
+            ClinAlert System
+        </div>
+        <p style="font-weight: 500;">&copy; <span id="year"></span> ClinAlert. All rights reserved.</p>
+        <p style="font-size: 0.9rem; margin-top: 0.5rem; color: #9CA3AF;">Improving healthcare delivery through intelligent, elegant design.</p>
+    </footer>
+
+    <!-- JavaScript for Animations -->
+    <script>
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Elegant Scroll Reveal Animation
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            const elementVisible = 100;
+
+            revealElements.forEach(el => {
+                const elementTop = el.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    el.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll(); // Trigger on initial load
+    </script>
+</body>
+</html>
